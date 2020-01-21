@@ -34,10 +34,12 @@ func getFactorial(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	vars := mux.Vars(r) //pega variaveis "path parameter"
 	w.WriteHeader(http.StatusOK)
-    r.URL.
 	number, ok := vars["num"]
 	if !ok {
 		return
+	} else if number == "" {
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode("Error")
 	}
 	n, _ := strconv.ParseInt(number, 10, 64)
 	calcFactorial := (factorial(big.NewInt(n)))
