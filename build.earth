@@ -1,0 +1,13 @@
+# Initialize the build environment - this applies to all targets.
+FROM golang:1.13
+WORKDIR /go-bin
+build:
+  RUN go get github.com/gorilla/mux
+  COPY src/main.go .
+  RUN go build -o build/src main.go
+  SAVE ARTIFACT build/src AS LOCAL build/src
+
+docker:
+  COPY +build/src .
+  ENTRYPOINT ["/src/go-bin"]
+  SAVE IMAGE factorial:latest
